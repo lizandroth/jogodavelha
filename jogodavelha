@@ -1,0 +1,46 @@
+def imprimir_tabuleiro(tabuleiro):
+    for linha in tabuleiro:
+        print(" | ".join(linha))
+        print("-" * 5)
+
+def verificar_vencedor(tabuleiro, jogador):
+    for i in range(3):
+        if all([tabuleiro[i][j] == jogador for j in range(3)]) or all([tabuleiro[j][i] == jogador for j in range(3)]):
+            return True
+    if tabuleiro[0][0] == jogador and tabuleiro[1][1] == jogador and tabuleiro[2][2] == jogador:
+        return True
+    if tabuleiro[0][2] == jogador and tabuleiro[1][1] == jogador and tabuleiro[2][0] == jogador:
+        return True
+    return False
+
+def verificar_empate(tabuleiro):
+    for linha in tabuleiro:
+        if " " in linha:
+            return False
+    return True
+
+tabuleiro = [[" " for _ in range(3)] for _ in range(3)]
+jogador_atual = "X"
+
+while True:
+    imprimir_tabuleiro(tabuleiro)
+    linha = int(input(f"Jogador {jogador_atual}, escolha a linha (0, 1, 2): "))
+    coluna = int(input(f"Jogador {jogador_atual}, escolha a coluna (0, 1, 2): "))
+
+    if tabuleiro[linha][coluna] != " ":
+        print("Posição já ocupada! Tente novamente.")
+        continue
+
+    tabuleiro[linha][coluna] = jogador_atual
+
+    if verificar_vencedor(tabuleiro, jogador_atual):
+        imprimir_tabuleiro(tabuleiro)
+        print(f"Jogador {jogador_atual} venceu!")
+        break
+
+    if verificar_empate(tabuleiro):
+        imprimir_tabuleiro(tabuleiro)
+        print("Empate!")
+        break
+
+    jogador_atual = "O" if jogador_atual == "X" else "X"
